@@ -1,0 +1,47 @@
+version: '3.7'
+
+services:
+  node1:
+    build: ./
+    image: event_registrator
+    hostname: node1
+    entrypoint: "app"
+    command:
+      - '--nodeName=node1'
+      - '--etcdInitialCluster=node1=http://node1:2380,node2=http://node2:2380,node3=http://node3:2380'
+    volumes:
+      - etcd1:/var/lib/default.etcd
+    ports:
+      - "8081:8080"
+
+  node2:
+    build: ./
+    image: event_registrator
+    hostname: node2
+    entrypoint: "app"
+    command:
+      - '--nodeName=node2'
+      - '--etcdInitialCluster=node1=http://node1:2380,node2=http://node2:2380,node3=http://node3:2380'
+    volumes:
+      - etcd2:/var/lib/default.etcd
+    ports:
+      - "8082:8080"
+
+  node3:
+    build: ./
+    image: event_registrator
+    hostname: node3
+    entrypoint: "app"
+    command:
+      - '--nodeName=node3'
+      - '--etcdInitialCluster=node1=http://node1:2380,node2=http://node2:2380,node3=http://node3:2380'
+    volumes:
+      - etcd3:/var/lib/default.etcd
+    ports:
+      - "8083:8080"
+
+
+volumes:
+  etcd1:
+  etcd2:
+  etcd3:
